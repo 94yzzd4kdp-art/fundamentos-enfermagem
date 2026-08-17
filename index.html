@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fundamentos da Enfermagem — Avaliação Online</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eaf7ff, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #17324d;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 24px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .icone {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #e5f5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+        }
+
+        h1 {
+            font-size: 25px;
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .subtitulo {
+            color: #607d94;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .aluno {
+            background: #1687c9;
+            color: white;
+        }
+
+        .professor {
+            background: #17324d;
+            color: white;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .informacao {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 13px;
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .versao {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #9aa8b5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="icone">🩺</div>
+
+        <h1>
+            Fundamentos da Enfermagem
+            <br>
+            Avaliação Online
+        </h1>
+
+        <p class="subtitulo">
+            Sistema de avaliação para Técnico em Enfermagem
+        </p>
+
+        <div class="botoes">
+
+            <button
+                class="aluno"
+                onclick="entrarAluno()">
+                👨‍🎓 Área do Aluno
+            </button>
+
+            <button
+                class="professor"
+                onclick="entrarProfessor()">
+                👨‍🏫 Área do Professor
+            </button>
+
+        </div>
+
+        <div class="informacao">
+            <strong>Conteúdos da avaliação:</strong><br>
+            Prontuário • Admissão • Alta • Transferência •
+            Anotação de Enfermagem • Administração de Medicamentos •
+            Agulhas • Seringas • Vias Parenterais • Segurança
+        </div>
+
+        <div class="versao">
+            Sistema de avaliação — versão inicial
+        </div>
+
+    </main>
+
+    <script>
+
+        function entrarAluno() {
+            alert("Área do aluno será configurada no próximo passo.");
+        }
+
+        function entrarProfessor() {
+            alert("Área do professor será configurada no próximo passo.");
+        }
+
+    </script>
+
+</body>
+</html>
