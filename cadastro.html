@@ -112,6 +112,11 @@
             color: white;
         }
 
+        .btn-cadastrar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .btn-voltar {
             margin-top: 12px;
             background: #eef3f7;
@@ -202,6 +207,7 @@
                 type="text"
                 id="matricula"
                 placeholder="Digite sua matrícula ou código"
+                autocomplete="username"
                 required>
         </div>
 
@@ -215,10 +221,11 @@
                 id="senha"
                 placeholder="Crie uma senha"
                 autocomplete="new-password"
+                minlength="6"
                 required>
 
             <p class="senha-info">
-                Essa senha será utilizada para acessar sua conta.
+                A senha deve possuir pelo menos 6 caracteres.
             </p>
         </div>
 
@@ -287,6 +294,7 @@
 
             <button
                 type="submit"
+                id="btnCadastrar"
                 class="btn-cadastrar">
 
                 Criar minha conta
@@ -314,45 +322,116 @@
     <div class="aviso">
 
         🔐 <strong>Importante:</strong>
-        guarde sua senha e sua resposta de segurança.
-        A senha não poderá ser alterada pelo aluno.
+        sua senha será tratada pelo sistema de autenticação.
+        Ela não será armazenada como texto na tabela de alunos.
 
     </div>
 
 </div>
 
+
 <script>
 
-    const formulario = document.getElementById("formCadastro");
+/*
+    CONFIGURAÇÃO DO SUPABASE
 
-    formulario.addEventListener("submit", function(event) {
+    A Publishable Key fica no frontend.
+    NÃO coloque aqui uma Secret Key ou service_role.
+*/
+
+const SUPABASE_URL =
+    "https://sxisetxgockdbtjpjnvu.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_sfpag8bPf6ynC4cg_sI_Kg_aCnPxPVz";
+
+
+/*
+    Mostra mensagens na tela.
+*/
+
+function mostrarMensagem(texto, tipo) {
+
+    const mensagem =
+        document.getElementById("mensagem");
+
+    mensagem.textContent = texto;
+
+    mensagem.className =
+        "mensagem " + tipo;
+
+    mensagem.style.display = "block";
+}
+
+
+/*
+    Cadastro
+*/
+
+const formulario =
+    document.getElementById("formCadastro");
+
+
+formulario.addEventListener(
+    "submit",
+    async function(event) {
 
         event.preventDefault();
 
+
         const primeiroNome =
-            document.getElementById("primeiroNome").value.trim();
+            document
+                .getElementById("primeiroNome")
+                .value
+                .trim();
+
 
         const segundoNome =
-            document.getElementById("segundoNome").value.trim();
+            document
+                .getElementById("segundoNome")
+                .value
+                .trim();
+
 
         const matricula =
-            document.getElementById("matricula").value.trim();
+            document
+                .getElementById("matricula")
+                .value
+                .trim();
+
 
         const senha =
-            document.getElementById("senha").value;
+            document
+                .getElementById("senha")
+                .value;
+
 
         const confirmarSenha =
-            document.getElementById("confirmarSenha").value;
+            document
+                .getElementById("confirmarSenha")
+                .value;
+
 
         const pergunta =
-            document.getElementById("pergunta").value;
+            document
+                .getElementById("pergunta")
+                .value;
+
 
         const respostaSeguranca =
-            document.getElementById("respostaSeguranca").value.trim();
+            document
+                .getElementById("respostaSeguranca")
+                .value
+                .trim();
 
-        const mensagem =
-            document.getElementById("mensagem");
 
+        const botao =
+            document.getElementById("btnCadastrar");
+
+
+        /*
+            VALIDAÇÕES
+        */
 
         if (
             !primeiroNome ||
@@ -373,10 +452,10 @@
         }
 
 
-        if (senha.length < 4) {
+        if (senha.length < 6) {
 
             mostrarMensagem(
-                "A senha deve ter pelo menos 4 caracteres.",
+                "A senha deve ter pelo menos 6 caracteres.",
                 "erro"
             );
 
@@ -395,37 +474,167 @@
         }
 
 
-        mostrarMensagem(
-            "Cadastro validado! A conexão com o banco de dados será configurada no próximo passo.",
-            "sucesso"
-        );
+        /*
+            Evita dois cliques enquanto salva.
+        */
+
+        botao.disabled = true;
+
+        botao.textContent =
+            "Criando conta...";
+
+
+        try {
+
+            /*
+                Para utilizar a autenticação do Supabase,
+                usamos um e-mail técnico baseado na matrícula.
+
+                O aluno continuará usando a matrícula
+                na interface do nosso sistema.
+            */
+
+            const email =
+                matricula
+                    .toLowerCase()
+                    .replace(/\s+/g, "")
+                    + "@aluno.fundamentosenfermagem.local";
+
+
+            /*
+                Cria a conta no Supabase Auth.
+            */
+
+            const respostaAuth =
+                await fetch(
+                    `${SUPABASE_URL}/auth/v1/signup`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "apikey": SUPABASE_KEY
+                        },
+
+                        body: JSON.stringify({
+
+                            email: email,
+
+                            password: senha,
+
+                            data: {
+
+                                primeiro_nome:
+                                    primeiroNome,
+
+                                segundo_nome:
+                                    segundoNome,
+
+                                matricula:
+                                    matricula,
+
+                                pergunta_seguranca:
+                                    pergunta,
+
+                                resposta_seguranca:
+                                    respostaSeguranca
+
+                            }
+
+                        })
+                    }
+                );
+
+
+            const dadosAuth =
+                await respostaAuth.json();
+
+
+            if (!respostaAuth.ok) {
+
+                throw new Error(
+                    dadosAuth.message ||
+                    dadosAuth.error_description ||
+                    "Não foi possível criar a conta."
+                );
+
+            }
+
+
+            /*
+                Se chegou aqui, a conta foi criada.
+            */
+
+            mostrarMensagem(
+                "Conta criada com sucesso! Agora você poderá acessar a Área do Aluno.",
+                "sucesso"
+            );
+
+
+            /*
+                Limpa os campos de senha.
+            */
+
+            document
+                .getElementById("senha")
+                .value = "";
+
+            document
+                .getElementById("confirmarSenha")
+                .value = "";
+
+
+            /*
+                Depois de alguns segundos,
+                vai para o login.
+            */
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "login-aluno.html";
+
+            }, 2500);
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro no cadastro:",
+                erro
+            );
+
+
+            mostrarMensagem(
+                erro.message ||
+                "Não foi possível criar a conta.",
+                "erro"
+            );
+
+
+        } finally {
+
+            botao.disabled = false;
+
+            botao.textContent =
+                "Criar minha conta";
+
+        }
 
     });
 
 
-    function mostrarMensagem(texto, tipo) {
+/*
+    Voltar para a página inicial.
+*/
 
-        const mensagem =
-            document.getElementById("mensagem");
+function voltarInicio() {
 
-        mensagem.textContent = texto;
+    window.location.href =
+        "index.html";
 
-        mensagem.className =
-            "mensagem " + tipo;
+}
 
-        mensagem.style.display = "block";
-
-    }
-
-
-    function voltarInicio() {
-
-        window.location.href = "index.html";
-
-    }
-
-    const SUPABASE_URL = "https://sxisetxgockdbtjpjnvu.supabase.co";
-const SUPABASE_KEY = "sb_publishable_sfpag8bPf6ynC4cg_sI_Kg_aCnPxPVz";
 </script>
 
 </body>
