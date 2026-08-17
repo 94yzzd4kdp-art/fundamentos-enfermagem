@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login do Aluno</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eaf7ff, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #17324d;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+        }
+
+        .cabecalho {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .icone {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #e5f5ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        h1 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+            color: #687d90;
+            font-size: 14px;
+        }
+
+        .campo {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccd8e2;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1687c9;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .entrar {
+            background: #1687c9;
+            color: white;
+            margin-top: 8px;
+        }
+
+        .cadastrar {
+            background: #eef3f7;
+            color: #17324d;
+            margin-top: 12px;
+        }
+
+        .recuperar {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #1687c9;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .mensagem {
+            display: none;
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .erro {
+            background: #ffe9e9;
+            color: #a12626;
+        }
+
+        .info {
+            background: #eaf7ff;
+            color: #17628e;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="cabecalho">
+        <div class="icone">👨‍🎓</div>
+
+        <h1>Área do Aluno</h1>
+
+        <p class="subtitulo">
+            Fundamentos da Enfermagem — Avaliação Online
+        </p>
+    </div>
+
+    <form id="formLogin">
+
+        <div class="campo">
+            <label for="primeiroNome">
+                Primeiro nome
+            </label>
+
+            <input
+                type="text"
+                id="primeiroNome"
+                placeholder="Digite seu primeiro nome"
+                required>
+        </div>
+
+        <div class="campo">
+            <label for="segundoNome">
+                Segundo nome
+            </label>
+
+            <input
+                type="text"
+                id="segundoNome"
+                placeholder="Digite seu segundo nome"
+                required>
+        </div>
+
+        <div class="campo">
+            <label for="matricula">
+                Matrícula / Código
+            </label>
+
+            <input
+                type="text"
+                id="matricula"
+                placeholder="Digite sua matrícula ou código"
+                required>
+        </div>
+
+        <div class="campo">
+            <label for="senha">
+                Senha
+            </label>
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+                required>
+        </div>
+
+        <button
+            type="submit"
+            class="entrar">
+            Entrar
+        </button>
+
+        <button
+            type="button"
+            class="cadastrar"
+            onclick="irParaCadastro()">
+            Criar minha conta
+        </button>
+
+        <a
+            class="recuperar"
+            onclick="recuperarSenha()">
+            Esqueci minha senha
+        </a>
+
+        <div
+            id="mensagem"
+            class="mensagem">
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+    document
+        .getElementById("formLogin")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const mensagem =
+                document.getElementById("mensagem");
+
+            mensagem.textContent =
+                "A conexão com o banco de dados será configurada no próximo passo.";
+
+            mensagem.className =
+                "mensagem info";
+
+            mensagem.style.display = "block";
+        });
+
+
+    function irParaCadastro() {
+
+        window.location.href = "cadastro.html";
+
+    }
+
+
+    function recuperarSenha() {
+
+        const mensagem =
+            document.getElementById("mensagem");
+
+        mensagem.textContent =
+            "A recuperação de senha será configurada junto ao banco de dados.";
+
+        mensagem.className =
+            "mensagem info";
+
+        mensagem.style.display = "block";
+
+    }
+
+</script>
+
+</body>
+</html>
